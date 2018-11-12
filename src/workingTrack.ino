@@ -4,35 +4,43 @@
 #define INCLUDE_INTERNET_SHIELD
 
 #include <OneSheeld.h>
-float lon;
+
 float lat;
+float lng;
+char charlat [20];
+char charlng [20];
 
-char charlat [10];
-char charlon [10];
+char vehicleID [4] = "001";
+char vehicleStatus [2] = "a";
 
-char readings [40];
+char readings [80];
 
-HttpRequest myRequest("https://tracking-965ca.firebaseio.com/coordinates.json");
+HttpRequest myRequest ("https://jauc-ae38e.firebaseio.com/carTracking.json");
 
 void setup() {
-  // put your setup code here, to run once:
-  OneSheeld.begin();
+  
+    OneSheeld.begin();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  lat = GPS.getLatitude();
-  dtostrf(lat, 8, 4, charlat);
-  lon = GPS.getLongitude();
-  dtostrf(lat, 7, 3, charlat); dtostrf(lon, 7, 3, charlon); 
-  strcat (readings, "\"");
-  strcat (readings,charlat);  
-  strcat(readings,","); 
-  strcat (readings,charlon);
-  strcat (readings, "\"");
-  Terminal.println(readings);
-  myRequest.addRawData(readings);
-  Internet.performPost(myRequest);
-  memset(readings, 0, sizeof(readings));
-  OneSheeld.delay(5000);
+
+    lat = GPS.getLatitude();
+    lng = GPS.getLongitude();
+    dtostrf(lat, 9, 5, charlat);
+    dtostrf(lng, 9, 5, charlng);
+    strcat(readings,"\"");
+    strcat(readings, vehicleID);
+    strcat(readings, ",");
+    strcat(readings, vehicleStatus);
+    strcat(readings, ",");
+    strcat(readings, charlat);
+    strcat(readings, ",");
+    strcat(readings, charlng);
+    strcat(readings, "\"");
+    Terminal.println(readings);
+    myRequest.addRawData(readings);
+    Internet.performPost(myRequest);
+    memset(readings, 0, sizeof(readings));
+    OneSheeld.delay(5000);
+    
 }
