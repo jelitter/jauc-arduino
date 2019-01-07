@@ -4,7 +4,8 @@
 #define INCLUDE_TERMINAL_SHIELD
 
 #include <OneSheeld.h>
-HttpRequest request("https://jauc-ae38e.firebaseio.com/cars/-LUtgVxScypNF-KFeqGZ.json"); // This URL is specific for car -LUtgVxScypNF-KFeqGZ. Change the URL to track another car
+HttpRequest request("https://jauc-ae38e.firebaseio.com/cars/-LUtgVxScypNF-KFeqGZ/location.json"); // This URL is specific for car -LUtgVxScypNF-KFeqGZ. Change the URL to track another car
+
 
 int cadency = 5000;
 
@@ -39,11 +40,12 @@ void getCoordinates() {
 void jsonBuilder(){
   dtostrf(latitude, 11, 7, charLatitude);
   dtostrf(longitude, 11, 7, charLongitude);
-  strcat(readings, "{\"location\":{\"lat\": ");
+  strcat(readings, "{\"lat\": ");
   strcat(readings, charLatitude);
   strcat(readings, ",\"lon\": ");
   strcat(readings, charLongitude);
-  strcat(readings, "}}");
+  strcat(readings, "}");
+
 }
 
 // Sent to Firebase
