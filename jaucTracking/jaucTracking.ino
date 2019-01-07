@@ -24,24 +24,19 @@ void setup() {
 
 void loop() {
   getCoordinates();
-  readingsCreator();
+  jsonBuilder();
   toFirebase();
   OneSheeld.delay(cadency);
 }
 
+// Get coordinates from GPS shield
 void getCoordinates() {
   latitude = GPS.getLatitude();
   longitude = GPS.getLongitude();
 }
 
-void toFirebase() {
-  request.addRawData(readings);
-  Internet.performPut(request);
-  Terminal.println(readings);
-  memset(readings, 0, sizeof(readings));
-}
-
-void readingsCreator(){
+// Build the json that will be sent to DB
+void jsonBuilder(){
   dtostrf(latitude, 11, 7, charLatitude);
   dtostrf(longitude, 11, 7, charLongitude);
   strcat(readings, "{\"location\":{\"lat\": ");
@@ -49,4 +44,12 @@ void readingsCreator(){
   strcat(readings, ",\"lon\": ");
   strcat(readings, charLongitude);
   strcat(readings, "}}");
+}
+
+// Sent to Firebase
+void toFirebase() {
+  request.addRawData(readings);
+  Internet.performPut(request);
+  Terminal.println(readings);
+  memset(readings, 0, sizeof(readings));
 }
